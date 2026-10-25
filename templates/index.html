@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101125">
+  <meta name="description" content="A fun Pokémon and fictional-character clue guessing game built with Python and Flask.">
+  <title>Who’s That? — Guessing Game</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <script src="{{ url_for('static', filename='game.js') }}" defer></script>
+</head>
+<body>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+  <main class="shell">
+    <header class="topbar">
+      <a class="brand" href="{{ url_for('index') }}" aria-label="Who's That home">
+        <span class="brand-mark">?</span><span>WHO'S <strong>THAT?</strong></span>
+      </a>
+      <span class="header-tag"><span class="status-pip"></span> THE GUESSING GAME</span>
+    </header>
+
+    <section class="intro" aria-labelledby="intro-title">
+      <div class="eyebrow">✦ A LITTLE BRAIN TEASER ✦</div>
+      <h1 id="intro-title">Think you can <span class="gradient-text">guess it?</span></h1>
+      <p>One mystery. Four clues. Eight rounds. Guess early to score big.</p>
+    </section>
+
+    <section class="settings" aria-label="Game options">
+      <div>
+        <div class="section-kicker">CHOOSE YOUR UNIVERSE</div>
+        <div class="settings-description">Switching categories starts a fresh game.</div>
+      </div>
+      <form action="{{ url_for('new_game') }}" method="post" class="category-form">
+        <label class="visually-hidden" for="category">Category</label>
+        <select id="category" name="category">
+          {% for value, name in categories.items() %}
+            <option value="{{ value }}" {% if value == category %}selected{% endif %}>{{ '⚡' if value == 'pokemon' else '🎭' if value == 'characters' else '🎲' }} {{ name }}</option>
+          {% endfor %}
+        </select>
+        <button type="submit" class="button button-ghost">↻ New game</button>
+      </form>
+    </section>
+
+    <div class="stats" aria-label="Game score">
+      <div class="stat"><span class="stat-label">TOTAL SCORE</span><div class="stat-value"><span class="stat-emoji">🏆</span> {{ score }} <small>pts</small></div></div>
+      <div class="stat"><span class="stat-label">ROUND</span><div class="stat-value"><span class="stat-emoji">🎯</span> {{ round_number if status != 'finished' else total_rounds }} <small>/ {{ total_rounds }}</small></div></div>
+      <div class="stat"><span class="stat-label">CORRECT</span><div class="stat-value"><span class="stat-emoji">✨</span> {{ won_count }} <small>{{ 'win' if won_count == 1 else 'wins' }}</small></div></div>
+    </div>
+
+    {% if status == 'finished' %}
+      <section class="finish-card">
+        <span class="finish-icon">🏆</span>
+        <div class="eyebrow">THE FINAL REVEAL</div>
+        <h2>Game complete!</h2>
+        <p>You scored <strong>{{ score }} points</strong> and guessed <strong>{{ won_count }} out of {{ total_rounds }}</strong> mysteries.</p>
+        <form action="{{ url_for('new_game') }}" method="post">
+          <input type="hidden" name="category" value="{{ category }}">
+          <button type="submit" class="button button-primary">Play again <span aria-hidden="true">↗</span></button>
+        </form>
+      </section>
+    {% else %}
+      <div class="game-layout">
+        <section class="game-card" aria-label="Current mystery">
+          <div class="game-card-top">
+            <span class="game-pill">{{ '⚡ POKÉMON' if question.category == 'pokemon' else '🎭 CHARACTER' }}</span>
+            <span class="round-label">ROUND {{ '%02d' | format(round_number) }} / {{ '%02d' | format(total_rounds) }}</span>
+          </div>
+          <div class="mystery-art" aria-hidden="true">
+            <div class="art-ring art-ring-outer"></div>
+            <div class="art-ring art-ring-inner"></div>
+            <span class="art-spark spark-one">✦</span><span class="art-spark spark-two">✧</span><span class="art-spark spark-three">✳</span>
+            <div class="question-mark">{% if status == 'won' %}✓{% elif status == 'skipped' %}!{% else %}?{% endif %}</div>
+            <div class="art-caption">{{ 'MYSTERY SOLVED' if status == 'won' else 'ANSWER REVEALED' if status == 'skipped' else 'IDENTITY UNKNOWN' }}</div>
+          </div>
+          <div class="game-card-bottom">
+            {% if status == 'playing' %}
+              <span>WHO AM I?</span>
+              <strong>{{ possible_points }} <small>POINTS AVAILABLE</small></strong>
+            {% else %}
+              <span>IT WAS...</span>
+              <strong class="answer-reveal">{{ question.name }}</strong>
+            {% endif %}
+          </div>
+        </section>
+
+        <section class="play-panel" aria-labelledby="clue-heading">
+          <div class="play-heading">
+            <div><div class="section-kicker">PIECE IT TOGETHER</div><h2 id="clue-heading">The clues</h2></div>
+            <div class="clue-count">{{ clue_index + 1 }} <span>/ 4</span></div>
+          </div>
+          <div class="clue-progress" aria-label="{{ clue_index + 1 }} of 4 clues revealed">
+            {% for idx in range(4) %}
+              <span class="progress-segment {% if idx <= clue_index %}is-active{% endif %}"></span>
+            {% endfor %}
+          </div>
+
+          <div class="clues">
+            {% for clue in visible_clues %}
+              <div class="clue-item {% if loop.last %}latest-clue{% endif %}">
+                <div class="clue-index">{{ '%02d' | format(loop.index) }}</div>
+                <p>{{ clue }}</p>
+                {% if loop.first %}<span class="clue-tag">{{ 'HARD' if loop.index == 1 else '' }}</span>{% endif %}
+              </div>
+            {% endfor %}
+            {% for idx in range(clue_index + 1, 4) %}
+              <div class="clue-item locked-clue"><div class="clue-index">{{ '%02d' | format(idx + 1) }}</div><p>Unlock clue {{ idx + 1 }}</p><span aria-hidden="true">🔒</span></div>
+            {% endfor %}
+          </div>
+
+          {% if feedback %}
+            <div role="status" class="feedback feedback-{{ feedback_type }}">{{ '✓' if feedback_type == 'success' else '↳' }} {{ feedback }}</div>
+          {% endif %}
+
+          {% if status == 'playing' %}
+            <form class="guess-form" method="post" action="{{ url_for('guess') }}">
+              <label for="guess">YOUR GUESS</label>
+              <div class="guess-input-wrap">
+                <input id="guess" name="guess" autocomplete="off" autocapitalize="words" spellcheck="false" maxlength="100" placeholder="Type a name..." required>
+                <button class="button button-primary" type="submit">Guess <span aria-hidden="true">→</span></button>
+              </div>
+              <div class="hint-text">Each wrong guess costs 10 potential points. Each new clue costs 25.</div>
+            </form>
+            <div class="secondary-actions">
+              <form action="{{ url_for('hint') }}" method="post"><button class="button button-ghost" type="submit" {% if clue_index == 3 %}disabled{% endif %}>💡 Reveal clue <span>−25 pts</span></button></form>
+              <form action="{{ url_for('skip') }}" method="post"><button class="button button-text" type="submit">Skip round ↗</button></form>
+            </div>
+          {% else %}
+            <div class="result-callout {{ 'result-win' if status == 'won' else 'result-skip' }}">
+              <span class="result-symbol">{{ '🎉' if status == 'won' else '👀' }}</span>
+              <div><strong>{{ 'Brilliant guess!' if status == 'won' else 'Mystery revealed!' }}</strong><p>{{ '+' ~ earned ~ ' points added to your score.' if status == 'won' else 'No points this round. The next mystery awaits.' }}</p></div>
+            </div>
+            <form action="{{ url_for('next_round') }}" method="post"><button class="button button-primary next-button" type="submit">{{ 'See results' if round_number == total_rounds else 'Next mystery' }} <span aria-hidden="true">→</span></button></form>
+          {% endif %}
+        </section>
+      </div>
+    {% endif %}
+
+    <section class="history" aria-labelledby="history-heading">
+      <div class="history-heading"><div><div class="section-kicker">YOUR ADVENTURE</div><h2 id="history-heading">Round history</h2></div><span class="history-count">{{ history|length }} / {{ total_rounds }} COMPLETED</span></div>
+      {% if history %}
+        <div class="history-list">
+          {% for item in history %}
+            <div class="history-item"><span class="history-icon">{{ '✓' if item.result == 'won' else '–' }}</span><span class="history-name">{{ item.name }}</span><span class="history-result">{{ 'CORRECT' if item.result == 'won' else 'SKIPPED' }}</span><strong>{{ '+' if item.points > 0 else '' }}{{ item.points }} pts</strong></div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="history-empty">Your victories (and near misses) will show up here. Let's play! ✨</p>
+      {% endif %}
+    </section>
+    <footer>BUILT WITH <span>♥</span> + PYTHON + FLASK <span class="footer-dot">•</span> MADE FOR CURIOUS MINDS</footer>
+  </main>
+</body>
+</html>
