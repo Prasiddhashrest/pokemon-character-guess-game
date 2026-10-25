@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" role="img">
+  <defs><radialGradient id="bg"><stop stop-color="#c88758"/><stop offset="1" stop-color="#261d54"/></radialGradient></defs>
+  <circle cx="150" cy="150" r="139" fill="url(#bg)"/>
+  <circle cx="150" cy="150" r="125" fill="none" stroke="#ffffff" stroke-opacity=".16" stroke-width="3"/>
+  
+    <path d="M71 267Q74 210 112 196H191Q227 208 238 267Z" fill="#e47b2f"/>
+    <path d="M98 219l52 41 48-41" stroke="#1d253d" stroke-width="13" fill="none"/>
+    <path d="M78 104L61 74L99 82L106 41L129 70L152 29L170 67L203 42L205 84L239 72L222 111Z" fill="#f4cc43"/>
+    {head('#ecc39b')}
+    <path d="M95 108h114v31H95Z" fill="#252e47"/>
+    <rect x="122" y="110" width="57" height="27" rx="5" fill="#a6bac9"/>
+    <path d="M136 122q14-14 28 0l-9 6" fill="none" stroke="#485b69" stroke-width="3"/>
+    <ellipse cx="125" cy="160" rx="7" ry="7" fill="#33659b"/><ellipse cx="176" cy="160" rx="7" ry="7" fill="#33659b"/>
+    <path d="M93 176l25 6m-25 8 25 1m88-15-25 6m25 8-25 1" stroke="#98633f" stroke-width="3"/>
+    <path d="M135 200Q150 210 166 200" fill="none" stroke="#ac685c" stroke-width="4"/>
+    
+</svg>

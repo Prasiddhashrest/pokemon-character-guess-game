@@ -6,6 +6,7 @@ from flask import Flask, redirect, render_template, request, session, url_for
 
 from data import CATEGORIES, QUESTION_BY_ID, ROUND_COUNT
 from game import matches_answer, pick_question, points_for
+from media import artwork_url
 
 app = Flask(__name__)
 # For local development only. Set SECRET_KEY to a random value before deployment.
@@ -65,6 +66,7 @@ def index():
         category=session["category"],
         category_label=CATEGORIES[session["category"]],
         question=question,
+        art_url=artwork_url(question) if question else None,
         status=status,
         clue_index=clue_index,
         wrong_guesses=wrong_guesses,

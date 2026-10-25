@@ -70,8 +70,17 @@
             <div class="art-ring art-ring-outer"></div>
             <div class="art-ring art-ring-inner"></div>
             <span class="art-spark spark-one">✦</span><span class="art-spark spark-two">✧</span><span class="art-spark spark-three">✳</span>
-            <div class="question-mark">{% if status == 'won' %}✓{% elif status == 'skipped' %}!{% else %}?{% endif %}</div>
-            <div class="art-caption">{{ 'MYSTERY SOLVED' if status == 'won' else 'ANSWER REVEALED' if status == 'skipped' else 'IDENTITY UNKNOWN' }}</div>
+            <div class="artwork-stage {{ 'stage-revealed' if status != 'playing' else 'stage-hidden stage-hint-' ~ clue_index }}">
+              <img class="character-art" src="{{ art_url }}" alt="" decoding="async" fetchpriority="high">
+              <span class="artwork-fallback" aria-hidden="true">?</span>
+              {% if status == 'playing' %}<span class="mystery-stamp" aria-hidden="true">?</span>{% endif %}
+            </div>
+            {% if status == 'won' %}
+              <span class="win-spark win-spark-a" aria-hidden="true">✦</span>
+              <span class="win-spark win-spark-b" aria-hidden="true">✧</span>
+              <span class="win-spark win-spark-c" aria-hidden="true">✦</span>
+            {% endif %}
+            <div class="art-caption">{{ 'MYSTERY SOLVED' if status == 'won' else 'ANSWER REVEALED' if status == 'skipped' else 'SILHOUETTE UNLOCKED' }}</div>
           </div>
           <div class="game-card-bottom">
             {% if status == 'playing' %}
@@ -119,7 +128,7 @@
                 <input id="guess" name="guess" autocomplete="off" autocapitalize="words" spellcheck="false" maxlength="100" placeholder="Type a name..." required>
                 <button class="button button-primary" type="submit">Guess <span aria-hidden="true">→</span></button>
               </div>
-              <div class="hint-text">Each wrong guess costs 10 potential points. Each new clue costs 25.</div>
+              <div class="hint-text">Each wrong guess costs 10 potential points. Each new clue costs 25. The silhouette becomes clearer with every clue.</div>
             </form>
             <div class="secondary-actions">
               <form action="{{ url_for('hint') }}" method="post"><button class="button button-ghost" type="submit" {% if clue_index == 3 %}disabled{% endif %}>💡 Reveal clue <span>−25 pts</span></button></form>
