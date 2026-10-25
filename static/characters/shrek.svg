@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" role="img">
+  <defs><radialGradient id="bg"><stop stop-color="#83aa4f"/><stop offset="1" stop-color="#283f3d"/></radialGradient></defs>
+  <circle cx="150" cy="150" r="139" fill="url(#bg)"/>
+  <circle cx="150" cy="150" r="125" fill="none" stroke="#ffffff" stroke-opacity=".16" stroke-width="3"/>
+  
+    <path d="M79 265Q87 207 125 199H185Q224 207 228 265Z" fill="#e6e0be"/>
+    <path d="M90 227L112 202L192 202L213 227L195 267H109Z" fill="#7b523e"/>
+    <path d="M103 125Q51 78 67 64Q85 51 123 112M199 125Q249 78 231 64Q216 52 179 111" fill="#7aaa4d" stroke="#679c42" stroke-width="9" stroke-linecap="round"/>
+    <ellipse cx="150" cy="148" rx="70" ry="74" fill="#8bb751"/>
+    <path d="M99 153Q117 146 134 157M164 157Q181 146 199 153" stroke="#4b7431" stroke-width="8" fill="none"/>
+    <circle cx="122" cy="148" r="7" fill="#293828"/><circle cx="179" cy="148" r="7" fill="#293828"/>
+    <ellipse cx="150" cy="175" rx="24" ry="19" fill="#7faa45"/>
+    <path d="M129 197Q149 212 174 196" stroke="#4a6a32" stroke-width="5" fill="none" stroke-linecap="round"/>
+    
+</svg>

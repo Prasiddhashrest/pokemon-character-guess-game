@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" role="img">
+  <defs><radialGradient id="bg"><stop stop-color="#61b6d0"/><stop offset="1" stop-color="#164c77"/></radialGradient></defs>
+  <circle cx="150" cy="150" r="139" fill="url(#bg)"/>
+  <circle cx="150" cy="150" r="125" fill="none" stroke="#ffffff" stroke-opacity=".16" stroke-width="3"/>
+  
+    <rect x="82" y="47" width="141" height="174" rx="15" fill="#ffe45d" stroke="#e7bb40" stroke-width="5"/>
+    <circle cx="103" cy="75" r="10" fill="#efcb43"/><circle cx="196" cy="98" r="9" fill="#efcb43"/><circle cx="108" cy="189" r="9" fill="#efcb43"/>
+    <ellipse cx="124" cy="127" rx="26" ry="30" fill="white"/><ellipse cx="173" cy="127" rx="26" ry="30" fill="white"/>
+    <circle cx="130" cy="133" r="10" fill="#3caade"/><circle cx="171" cy="133" r="10" fill="#3caade"/>
+    <circle cx="131" cy="133" r="5" fill="#15191a"/><circle cx="170" cy="133" r="5" fill="#15191a"/>
+    <path d="M113 168Q150 209 190 166" fill="#923e48" stroke="#7a3e49" stroke-width="3"/>
+    <path d="M135 184v18h16v-17h14v17h14v-19" fill="white"/>
+    <rect x="83" y="218" width="140" height="18" fill="white"/><rect x="83" y="236" width="140" height="17" fill="#965e39"/>
+    <path d="M145 221l-10 12 12 13-8 22h22l-8-22 12-13-10-12Z" fill="#d63d45"/>
+    
+</svg>

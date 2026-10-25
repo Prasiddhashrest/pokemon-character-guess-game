@@ -1,4 +1,5 @@
 import unittest
+from pathlib import Path
 
 try:
     from app import app
@@ -17,6 +18,14 @@ class GameLogicTests(unittest.TestCase):
         self.assertGreaterEqual(sum(q['category'] == 'pokemon' for q in QUESTIONS), ROUND_COUNT)
         self.assertGreaterEqual(sum(q['category'] == 'characters' for q in QUESTIONS), ROUND_COUNT)
         self.assertTrue(all(len(q['clues']) == 4 for q in QUESTIONS))
+
+    def test_local_character_art_exists(self):
+        artworks = Path(__file__).resolve().parents[1] / 'static' / 'characters'
+        for question in QUESTIONS:
+            if question['category'] == 'characters':
+                art_file = artworks / f"{question['id']}.svg"
+                self.assertTrue(art_file.is_file(), f"Missing artwork: {art_file.name}")
+                self.assertIn('<svg ', art_file.read_text(encoding='utf-8'))
 
     def test_normalize_ignores_punctuation_accents_and_spaces(self):
         self.assertEqual(normalize('POKÉ MON!'), 'pokemon')
@@ -96,6 +105,24 @@ class WebsiteTests(unittest.TestCase):
             self.assertEqual(sess['score'], 0)
         response = self.client.get('/')
         self.assertIn(b'Game complete', response.data)
+
+    def test_pokemon_art_is_used_and_hidden(self):
+        response = self.client.get('/')
+        self.assertIn(b'stage-hidden', response.data)
+        self.assertIn(b'official-artwork/', response.data)
+        self.assertIn(b'character-art', response.data)
+
+    def test_character_art_is_local_and_reveal_shows_image(self):
+        self.client.post('/new-game', data={'category': 'characters'})
+        response = self.client.get('/')
+        self.assertIn(b'/static/characters/', response.data)
+        self.assertIn(b'stage-hidden', response.data)
+        with self.client.session_transaction() as sess:
+            answer = QUESTION_BY_ID[sess['current_id']]['name']
+        self.client.post('/guess', data={'guess': answer})
+        response = self.client.get('/')
+        self.assertIn(b'stage-revealed', response.data)
+        self.assertIn(answer.encode('utf-8'), response.data)
 
     def test_category_selection(self):
         self.client.post('/new-game', data={'category': 'characters'})
