@@ -1,22 +1,42 @@
-# Who's That? ⚡🎭
+# Game: Who's That? 
 
-A colorful browser-based **Guess the Pokémon / Character** game. Built with **Python, Flask, HTML, CSS and a little JavaScript** as a portfolio-friendly beginner project.
+An interactive browser-based guessing game built around Pokémon and fictional characters. Players work through an eight-round game, unlocking progressively easier clues while trying to identify each character as early as possible for a higher score. The project combines server-side game state, randomized question selection, flexible answer validation, responsive UI design, automated testing, and CI workflows.
+
+Built with **Python, Flask, HTML, CSS and a little JavaScript** as a portfolio-friendly beginner project.
 
 **Version 1.2:** character illustrations, Pokémon artwork silhouettes, animated clues, and answer reveals.
 
 ## Features
 
-- ⚡ Play Pokémon rounds, 🎭 fictional-character rounds, or 🎲 mixed rounds.
-- 🧩 Four clues per character, from difficult to easier.
-- 💯 Earn **100 points** on the first clue. Each added clue lowers the points by 25, and each incorrect guess lowers them by 10 (minimum 10 for a correct answer).
-- ✅ Flexible guesses: case, spaces, punctuation, accents, and common aliases are accepted.
-- 🏆 An eight-round game with a running score, round history, and a final results screen.
-- 🔀 Random questions without repeats within a game.
-- 🖼️ Hidden Pokémon silhouettes that become less blurry as you unlock clues; a full-art reveal when you guess or skip.
-- 🎨 Twelve local, original stylized SVG portraits for the fictional-character category.
-- ✨ A celebratory image pop and sparkle animation for correct guesses, animated clues, and subtle floating artwork. Respects reduced-motion settings.
-- 📱 Responsive layout for phone and desktop.
-- 🧪 Automated tests with Python's built-in `unittest`, plus GitHub Actions checks on pushes and pull requests.
+- Play Pokémon rounds, fictional-character rounds, or mixed rounds.
+- Four clues per character, from difficult to easier.
+- Pokémon, fictional-character, and mixed game modes
+- Eight-round game sessions
+- Reduced-motion accessibility support
+- Earn **100 points** on the first clue. Each added clue lowers the points by 25, and each incorrect guess lowers them by 10 (minimum 10 for a correct answer).
+- Flexible guesses: case, spaces, punctuation, accents, and common aliases are accepted.
+- An eight-round game with a running score, round history, and a final results screen.
+- Random questions without repeats within a game.
+- Hidden Pokémon silhouettes that become less blurry as you unlock clues; a full-art reveal when you guess or skip.
+- Twelve local, original stylized SVG portraits for the fictional-character category.
+- A celebratory image pop and sparkle animation for correct guesses, animated clues, and subtle floating artwork. Respects reduced-motion settings.
+- Responsive layout for phone and desktop.
+- Automated tests with Python's built-in `unittest`, plus GitHub Actions checks on pushes and pull requests.
+
+### How the Game Works
+
+- Each round begins with one difficult clue.
+- Players can either submit a guess or unlock additional clues.
+- Scoring begins at 100 points:
+    - each additional clue reduces the available score by 25 points
+    - each incorrect guess reduces the score by 10 points
+    - a correct answer always earns at least 10 points
+- After eight rounds, the application displays the player's final result.
+
+## Demo:
+
+![demo-1-pokemon](guess-game-demo.png)
+
 
 ## Quick start (Mac / Linux)
 
