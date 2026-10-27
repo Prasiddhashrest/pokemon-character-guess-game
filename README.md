@@ -35,10 +35,13 @@ Built with **Python, Flask, HTML, CSS and a little JavaScript** as a portfolio-f
 
 ## Demo:
 
-![demo-1-pokemon](guess-game-demo.png)
+![demo-1-pokemon](pokemon-test-demo.png)
+
+![demo-2-pokemon](guess-game-demo.png)
 
 
-## Quick start (Mac / Linux)
+## How to get it locally:
+### Quick start (Mac / Linux)
 
 Open Terminal in the extracted project folder:
 
